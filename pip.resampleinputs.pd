@@ -3,7 +3,7 @@
 #X declare -path ../hcj.lib;
 #X obj 391 327 tabwrite~ resampler;
 #X obj 351 85 r~ driftermix;
-#X obj 392 107 r~ monosynthmix;
+#X obj 402 99 r~ monosynthmix;
 #X obj 420 149 hcj.lib.cross~;
 #X obj 507 76 r~ master-noise;
 #X obj 19 17 declare -path .;
