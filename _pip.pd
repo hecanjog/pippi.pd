@@ -235,6 +235,7 @@ sinesum 512 0 0.125 0.125 0.25 0 0.125 0 0.25 0.125 0 0 0.125 0 0 0
 #X obj 310 9 r tb2-a3;
 #X obj 98 102 r tb2-a4;
 #X obj 324 98 r tb2-a5;
+#X obj 20 12 loadbang;
 #X connect 1 0 0 0;
 #X connect 2 0 0 0;
 #X connect 3 0 0 0;
@@ -245,6 +246,7 @@ sinesum 512 0 0.125 0.125 0.25 0 0.125 0 0.25 0.125 0 0 0.125 0 0 0
 #X connect 8 0 1 0;
 #X connect 9 0 4 0;
 #X connect 10 0 5 0;
+#X connect 11 0 2 0;
 #X restore 22 148 pd pianospitch;
 #N canvas 68 35 895 406 driftpitch 0;
 #X msg 20 164 driftlow1;

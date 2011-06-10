@@ -12,7 +12,7 @@
 #X obj 161 320 *~;
 #X obj 569 238 *~ 0.35;
 #X obj 160 346 outlet~;
-#X obj 322 167 hcj.lib.mask 4;
+#X obj 316 155 hcj.lib.mask 4;
 #X obj 237 28 r lfp1;
 #X obj 147 156 pip.clickadsr;
 #X obj 261 223 *~;
@@ -22,13 +22,17 @@
 #X obj 395 316 *~;
 #X obj 399 228 *~;
 #X obj 460 196 pip.clickadsr;
-#X obj 460 172 hcj.lib.mask 5;
+#X obj 446 167 hcj.lib.mask 5;
 #X obj 152 72 spigot;
 #X obj 304 33 == 0;
 #X obj 295 7 r nb8-1;
 #X obj 238 68 spigot;
 #X obj 147 136 hcj.lib.mask 2;
 #X obj 244 109 t b b b;
+#X obj 371 9 loadbang;
+#X msg 371 29 0;
+#X obj 434 78 r nb8-2;
+#X obj 433 101 t b b b;
 #X connect 0 0 10 0;
 #X connect 0 0 20 0;
 #X connect 1 0 0 0;
@@ -64,3 +68,10 @@
 #X connect 29 0 28 0;
 #X connect 29 1 13 0;
 #X connect 29 2 23 0;
+#X connect 30 0 31 0;
+#X connect 31 0 25 0;
+#X connect 31 0 27 1;
+#X connect 32 0 33 0;
+#X connect 33 0 15 0;
+#X connect 33 1 18 0;
+#X connect 33 2 22 0;
