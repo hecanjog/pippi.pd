@@ -432,12 +432,14 @@ sinesum 512 0 0.125 0.125 0.25 0 0.125 0 0.25 0.125 0 0 0.125 0 0 0
 #X obj 742 389 hcj.lib.cross~;
 #X obj 789 365 impulse~;
 #X obj 789 346 r lfpa;
-#X obj 847 365 / 127;
+#X obj 847 356 / 127;
 #X obj 742 408 *~ 10;
 #X obj 125 311 pip.resample;
 #X obj 34 311 pip.resample;
 #X obj 663 319 r nb6-2;
 #X obj 192 112 r nf7;
+#X obj 848 377 - 1;
+#X obj 847 396 * -1;
 #X connect 1 0 0 0;
 #X connect 1 1 0 0;
 #X connect 5 0 6 0;
@@ -489,7 +491,7 @@ sinesum 512 0 0.125 0.125 0.25 0 0.125 0 0.25 0.125 0 0 0.125 0 0 0
 #X connect 78 0 82 0;
 #X connect 79 0 78 1;
 #X connect 80 0 79 0;
-#X connect 81 0 78 2;
+#X connect 81 0 87 0;
 #X connect 82 0 35 0;
 #X connect 83 0 61 0;
 #X connect 83 1 62 0;
@@ -498,3 +500,5 @@ sinesum 512 0 0.125 0.125 0.25 0 0.125 0 0.25 0.125 0 0 0.125 0 0 0
 #X connect 85 0 32 0;
 #X connect 85 0 79 0;
 #X connect 86 0 10 0;
+#X connect 87 0 88 0;
+#X connect 88 0 78 2;
