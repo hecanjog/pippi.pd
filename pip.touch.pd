@@ -1,21 +1,9 @@
 #N canvas 501 53 443 276 10;
-#X obj 887 30 unpackOSC;
-#X obj 887 9 udpreceive 8000;
-#X obj 814 165 udpsend;
-#X obj 763 143 packOSC;
-#X msg 763 122 /3/multitoggle8/2/1 \$1;
-#X obj 926 50 print osc;
-#X obj 888 49 s osc;
-#X msg 814 144 connect 192.255.0.2 8001;
-#X obj 763 97 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
-1;
-#X msg 672 116 disconnect;
-#X obj 889 70 pip.touchgrid;
-#X connect 0 0 5 0;
-#X connect 0 0 6 0;
+#X obj 36 31 unpackOSC;
+#X obj 36 10 udpreceive 8000;
+#X obj 75 51 print osc;
+#X obj 37 50 s osc;
+#X obj 38 71 pip.touchgrid;
+#X connect 0 0 2 0;
+#X connect 0 0 3 0;
 #X connect 1 0 0 0;
-#X connect 3 0 2 0;
-#X connect 4 0 3 0;
-#X connect 7 0 2 0;
-#X connect 8 0 4 0;
-#X connect 9 0 2 0;
