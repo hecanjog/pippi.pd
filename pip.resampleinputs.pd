@@ -2,8 +2,8 @@
 #X declare -path .;
 #X declare -path ../hcj.lib;
 #X obj 391 327 tabwrite~ resampler;
-#X obj 351 85 r~ driftermix;
-#X obj 402 99 r~ monosynthmix;
+#X obj 208 39 r~ driftermix;
+#X obj 220 18 r~ monosynthmix;
 #X obj 420 149 hcj.lib.cross~;
 #X obj 507 76 r~ master-noise;
 #X obj 19 17 declare -path .;
@@ -16,8 +16,12 @@
 #X obj 283 155 tabplay~ resampler;
 #X obj 304 205 spigot~;
 #X obj 343 182 r nb5-1;
-#X connect 1 0 3 0;
-#X connect 2 0 3 0;
+#X obj 439 52 r nk4;
+#X obj 360 110 hcj.lib.cross~;
+#X obj 440 77 / 127;
+#X obj 340 43 r~ pianomix;
+#X connect 1 0 16 0;
+#X connect 2 0 16 0;
 #X connect 3 0 0 0;
 #X connect 4 0 3 1;
 #X connect 7 0 11 0;
@@ -29,3 +33,7 @@
 #X connect 12 0 10 0;
 #X connect 13 1 0 0;
 #X connect 14 0 13 1;
+#X connect 15 0 17 0;
+#X connect 16 0 3 0;
+#X connect 17 0 16 2;
+#X connect 18 0 16 1;
