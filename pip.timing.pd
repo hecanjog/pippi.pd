@@ -1,4 +1,4 @@
-#N canvas 1392 140 1153 786 10;
+#N canvas 0 0 1009 506 10;
 #X declare -path ../hcj.lib;
 #X declare -path .;
 #X msg 196 239 1;
@@ -98,6 +98,8 @@
 #X floatatom 968 128 5 0 0 0 - - -;
 #X obj 1018 82 line;
 #X msg 1041 55 \$1 1000;
+#X obj 191 392 s metro1-to-jason;
+#X obj 34 345 s metro2-to-jason;
 #X connect 0 0 22 0;
 #X connect 1 0 0 0;
 #X connect 8 0 11 0;
@@ -105,6 +107,7 @@
 #X connect 10 0 9 0;
 #X connect 11 0 10 0;
 #X connect 12 0 76 0;
+#X connect 12 0 98 0;
 #X connect 13 0 73 0;
 #X connect 14 0 13 1;
 #X connect 16 0 57 0;
@@ -116,6 +119,7 @@
 #X connect 20 0 13 0;
 #X connect 21 0 20 0;
 #X connect 22 0 44 0;
+#X connect 22 0 97 0;
 #X connect 22 1 45 0;
 #X connect 22 2 46 0;
 #X connect 22 3 47 0;

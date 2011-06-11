@@ -1,0 +1,11 @@
+#N canvas 200 12 450 300 10;
+#X obj 52 65 inlet;
+#X text 67 40 ip address in (symbol);
+#X obj 169 60 inlet;
+#X obj 169 83 packOSC;
+#X obj 117 147 udpsend;
+#X msg 52 87 connect \$1 8002;
+#X connect 0 0 5 0;
+#X connect 2 0 3 0;
+#X connect 3 0 4 0;
+#X connect 5 0 4 0;

@@ -1,0 +1,14 @@
+#N canvas 43 33 450 300 10;
+#X obj 153 179 outlet;
+#X obj 153 119 unpackOSC;
+#X obj 153 146 route /erik/metro1 /erik/metro2;
+#X obj 240 179 outlet;
+#X obj 74 178 s erikmetro1;
+#X obj 287 178 s erikmetro2;
+#X obj 154 98 udpreceive 8003;
+#X connect 1 0 2 0;
+#X connect 2 0 0 0;
+#X connect 2 0 4 0;
+#X connect 2 1 3 0;
+#X connect 2 1 5 0;
+#X connect 6 0 1 0;
