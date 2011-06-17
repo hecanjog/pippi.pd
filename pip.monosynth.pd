@@ -1,8 +1,8 @@
-#N canvas 1044 83 730 370 10;
+#N canvas 49 83 730 370 10;
 #X declare -path ../hcj.lib;
 #X declare -path .;
-#X obj 397 288 throw~ mL;
-#X obj 458 288 throw~ mR;
+#X obj 382 308 throw~ mL;
+#X obj 443 308 throw~ mR;
 #X obj 448 197 pip.clickadsr;
 #X obj 434 223 *~;
 #X obj 228 25 r nb1-2;
@@ -13,7 +13,7 @@
 #X obj 553 134 / 127;
 #X obj 554 155 * 3;
 #X msg 554 175 \$1 4000;
-#X obj 422 263 *~;
+#X obj 464 281 *~;
 #X obj 554 195 line~;
 #X obj 216 149 float 60;
 #X obj 224 195 * 1;
@@ -54,8 +54,10 @@
 #X msg 85 30 0;
 #X msg 560 332 5 4 6 8;
 #X msg 618 332 1.5 2.5 6 4;
-#X obj 533 287 s~ monosynthmix;
+#X obj 527 301 s~ monosynthmix;
 #X obj 552 113 r nf4;
+#X obj 125 245 r nb0-6;
+#X msg 125 267 440;
 #X connect 2 0 3 1;
 #X connect 3 0 12 0;
 #X connect 4 0 19 0;
@@ -67,9 +69,9 @@
 #X connect 9 0 10 0;
 #X connect 10 0 11 0;
 #X connect 11 0 13 0;
-#X connect 12 0 0 0;
-#X connect 12 0 1 0;
 #X connect 12 0 53 0;
+#X connect 12 0 1 0;
+#X connect 12 0 0 0;
 #X connect 13 0 12 1;
 #X connect 14 0 15 0;
 #X connect 15 0 36 0;
@@ -105,3 +107,5 @@
 #X connect 49 0 50 0;
 #X connect 50 0 18 0;
 #X connect 54 0 9 0;
+#X connect 55 0 56 0;
+#X connect 56 0 17 0;
