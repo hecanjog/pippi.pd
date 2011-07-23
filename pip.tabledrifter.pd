@@ -1,4 +1,4 @@
-#N canvas 512 176 1290 695 10;
+#N canvas 0 0 1009 506 10;
 #X declare -path ../hcj.lib;
 #X obj 130 524 outlet~;
 #X obj 365 83 inlet;
@@ -33,7 +33,7 @@
 #X obj 2 275 * 2;
 #X obj 31 103 s \$0-waveform;
 #X obj 176 323 r \$0-waveform;
-#X obj 47 229 r tonic;
+#X obj 48 210 r tonic;
 #X obj 122 90 inlet;
 #X obj 122 109 s \$0-tonicmultiplier;
 #X obj 29 187 r \$0-tonicmultiplier;
@@ -71,8 +71,11 @@
 #X obj 488 273 + 100;
 #X obj 338 209 metro 8100;
 #X obj 373 289 del 100;
-#X obj 368 527 outlet~;
-#X obj 461 231 + 1000;
+#X obj 608 83 inlet;
+#X obj 609 107 s \$0-tonictoggle;
+#X obj 101 209 r \$0-tonictoggle;
+#X obj 48 230 spigot 1;
+#X obj 456 229 + 3000;
 #X obj 461 210 random 4000;
 #X connect 1 0 22 0;
 #X connect 2 0 29 0;
@@ -97,7 +100,7 @@
 #X connect 27 0 26 0;
 #X connect 28 0 27 0;
 #X connect 30 0 45 0;
-#X connect 31 0 35 1;
+#X connect 31 0 72 0;
 #X connect 32 0 33 0;
 #X connect 34 0 65 1;
 #X connect 35 0 28 0;
@@ -116,12 +119,11 @@
 #X connect 45 0 5 0;
 #X connect 45 0 46 0;
 #X connect 46 0 18 0;
-#X connect 46 0 69 0;
 #X connect 47 0 54 0;
 #X connect 50 0 0 0;
 #X connect 51 0 0 0;
 #X connect 52 0 18 1;
-#X connect 53 0 71 0;
+#X connect 53 0 74 0;
 #X connect 56 0 48 0;
 #X connect 57 0 47 0;
 #X connect 58 0 57 0;
@@ -137,5 +139,8 @@
 #X connect 67 0 55 0;
 #X connect 67 0 68 0;
 #X connect 68 0 61 0;
-#X connect 70 0 63 0;
-#X connect 71 0 70 0;
+#X connect 69 0 70 0;
+#X connect 71 0 72 1;
+#X connect 72 0 35 1;
+#X connect 73 0 63 0;
+#X connect 74 0 73 0;
