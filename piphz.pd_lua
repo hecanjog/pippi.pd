@@ -2,9 +2,10 @@ local PipHz = pd.Class:new():register("piphz")
 
 function PipHz:initialize(sel, atoms)
     self.inlets = 1 
-    self.outlets = 2 
+    self.outlets = 4 
     self.voices = {} 
-    self.base_hz = 65.406 
+    self.base_hz = 261.63 
+    self.samp_hz = 110
 
     self.ratios = {
             {1, 1},
@@ -21,11 +22,15 @@ function PipHz:initialize(sel, atoms)
             {15, 8}
     }
 
-    if type(atoms[1]) == "number" then self.base_hz = atoms[1] end
-
-    for voice_num = 1, self.outlets do
-        table.insert(self.voices, {voice_num, 440, 0, 1})
+    if type(atoms[1]) == "number" then
+        self.base_hz = atoms[1]
     end
+
+    if type(atoms[2]) == "number" then
+        self.samp_hz = atoms[2]
+    end
+
+    pd.post("Tuning to: " .. tostring(self.base_hz))
 
     return true
 end
@@ -42,12 +47,20 @@ function PipHz:in_1(sel, atoms)
 
     ratio = self.ratios[scale_degree + 1]
     ratio = ratio[1] / ratio[2]
-    hz = (self.base_hz / 8) * (octave_offset * ratio)
+    hz = (self.base_hz / 32) * (octave_offset * ratio)
 
-    self.voices[atoms[1]] = {voice_index, hz, amp, octave_offset * ratio}
+    hz_diff = self.base_hz / self.samp_hz
+    speed = (octave_offset * ratio * hz_diff) / 32
+
+    self.voices[atoms[1]] = {voice_index, hz, amp, speed}
 
     if amp > 0 then
+        amp = 1
+        self:outlet(3, sel, {voice_index, amp})
         self:outlet(1, sel, {atoms[1], self.voices[atoms[1]][4]})
         self:outlet(2, sel, self.voices[atoms[1]])
+    else
+        self:outlet(4, sel, {voice_index, amp})
     end
+
 end
