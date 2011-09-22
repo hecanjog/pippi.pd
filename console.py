@@ -33,22 +33,39 @@ class Pippi(cmd.Cmd):
 
     prompt = 'pippi: '
     intro = 'Pippi Console'
-    pd = '' # PdSend instance lives here
+    pd = '' # PdSend class instance lives here
 
-    def do_msg(self, msg):
-        """ send unformatted messages to pd for testing """
-        self.pd.send([msg])
+    def do_pd(self, cmd):
+        """ connect / disconnect from pd, 
+        send pd messages directly """
 
-    def help_msg(self):
-        print 'm [message]'
-        print 'Send a single unformatted message to pd'
+        cmd = cmd.split()
+
+        if cmd[0] == 'msg':
+            cmd.pop(0)
+            cmd = ' '.join(cmd)
+            self.pd.send(['pd ' + cmd])
+        elif cmd[0] == 'c':
+            self.pd = PdSend()
+        elif cmd[0] == 'd':
+            self.pd.close()
+
+    def do_o(self, cmd):
+        """ interact with overtone group """
+
+        cmd = cmd.split()
+
+        if cmd[0] == 'v' or cmd[0] == 'f':
+            cmd = ' '.join(cmd)
+            self.pd.send(['overtone all ' + cmd])
 
     def do_EOF(self, line):
         return True
 
     def postloop(self):
-        print 'Disconnecting from PD'
-        self.pd.close()
+        if self.pd.connected == True:
+            print 'Disconnecting from PD'
+            self.pd.close()
         print
 
 class PdSend():
@@ -57,16 +74,21 @@ class PdSend():
     sport = 3000
     rport = 3001
     pd = '' # the socket object will live here
+    connected = False # Totally bulletproof way to keep track of connection. Um.
 
     def __init__(self):
         self.connect()
-        print 'Sending to PD on port ' + str(self.sport)
 
     def connect(self):
         """ make a connection to pd """
         print 'Connecting to PD'
-        self.pd = socket.socket(socket.AF_INET, socket.SOCK_STREAM) # create ipv4 socket
-        self.pd.connect((self.pdhost, self.sport)) # make the connection
+        try:
+            self.pd = socket.socket(socket.AF_INET, socket.SOCK_STREAM) # create ipv4 socket
+            self.pd.connect((self.pdhost, self.sport)) # make the connection
+            self.connected = True
+            print 'Sending to PD on port ' + str(self.sport)
+        except:
+            print 'Connection failed - open PD with [netreceive ' + str(self.sport) + '] at least!'
 
     def send(self, msgs):
         """ send a list of message strings to pd """
@@ -74,7 +96,6 @@ class PdSend():
             for msg in msgs:
                 msg = str(msg) + ';'
                 self.pd.send(msg)
-                print msg
         except:
             print 'Could not send. Did you open a connection?'
 
@@ -82,6 +103,7 @@ class PdSend():
         """ close the socket connection """
         print 'Closing connection to PD'
         self.pd.close()
+        self.connected = False
 
     def format(self, target, msgs):
         """ format a list of messages into message strings """
@@ -94,9 +116,6 @@ class PdSend():
 if __name__ == '__main__':
         # Create console
         console = Pippi()
-
-        # Connect to PD
-        console.pd = PdSend()
 
         # Start looping command prompt
         console.cmdloop()
