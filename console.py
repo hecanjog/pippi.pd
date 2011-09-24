@@ -35,6 +35,26 @@ class Pippi(cmd.Cmd):
     intro = 'Pippi Console'
     pd = '' # PdSend class instance lives here
 
+    # Default fundamental frequency
+    freq = 220.0 # Oh, so western!
+
+    # Default octave multiplier
+    octave = 1.0
+
+    # Default drift speed for overtones
+    drift_speed = 0.3
+
+    # Default just diatonic scale
+    diatonic = [
+        (1.0, 1.0),  # 1:1  P1 C
+        (9.0, 8.0),  # 9:8  M2 D
+        (5.0, 4.0),  # 5:4  M3 E
+        (4.0, 3.0),  # 4:3  P4 F
+        (3.0, 2.0),  # 3:2  P5 G
+        (5.0, 3.0),  # 5:3  M6 A
+        (15.0, 8.0), # 15:8 M7 B
+        ]
+
     def do_pd(self, cmd):
         """ connect / disconnect from pd, 
         send pd messages directly """
@@ -51,13 +71,147 @@ class Pippi(cmd.Cmd):
             self.pd.close()
 
     def do_o(self, cmd):
-        """ interact with overtone group """
+        cmds = cmd.split(',')
+
+        for cmd in cmds:
+            self.overtones(cmd)
+
+    def overtones(self, cmd):
+        """ 
+        interact with overtones 
+
+        an overtone in pippi is actually
+        a single wavetable osc in pd.
+        pippi has 6 overtones in total, each 
+        with a set of partials rendered as a wavetable.
+        Three groups of overtones, two channels each.
+
+        a 1, a 2
+        b 1, b 2
+        c 1, c 2
+
+        """
+
+        group = ''
+        channel = ''
+        operation = ''
 
         cmd = cmd.split()
 
-        if cmd[0] == 'v' or cmd[0] == 'f':
-            cmd = ' '.join(cmd)
-            self.pd.send(['overtone all ' + cmd])
+        # 0th index tells us which overtone to route to, 
+        # or implicitly refers to all overtones in the 
+        # absence of a group or channel specification.
+        # It also tells us which operation to perform.
+        #
+        # eg: 
+        #   af [ a 1 f, a 2 f]
+        #   bv [ b 1 v, b 2 v]
+        #   a1f [ a 1 f ]
+        #
+        # the first character denotes group, the second 
+        # is the channel, and the third is the operation
+
+        # strip whitespace from command elements
+        for i, s in enumerate(cmd):
+            cmd[i].strip()
+
+        if len(cmd[0]) == 3:
+            # Operations on a single group channel
+            group = cmd[0][0:1]
+            channel = cmd[0][1:2]
+            operation = cmd[0][2:3]
+        elif len(cmd[0]) == 2:
+            # Operations on all channels of a group
+            group = cmd[0][0:1]
+            operation = cmd[0][1:2]
+        elif len(cmd[0]) == 1:
+            # Operations on all channels of all groups
+            operation = cmd[0]
+
+        # Construct a well formed selection message
+        selection = 'overtone '
+
+        if group == '' and channel == '':
+            selection += 'all'
+        elif channel == '':
+            selection += group
+        else:
+            selection += group + channel
+
+        # We're done with the 0th element, next we parse 
+        # operation arguments from the remaining list items
+        cmd.pop(0)
+
+        # Construct a well formed operation message
+        if operation == 'f':
+            # Change the fundamental frequency
+
+            # Now the 0th element will be an indication of a few 
+            # possible things:
+            #       - absolute frequency in hz
+            #       - diatonic scale degree
+            #       - ratio
+
+            if cmd[0][0:1] == 's':
+                # Set freq to diatonic scale degree
+
+                cmd[0] = cmd[0][1:] # strip 's' 
+
+                # self.diatonic counts from 0, as is the convention in python
+                # scale degrees are inputted counting from 1, as is the convention 
+                # in western musical notation. so subtract 1!
+                degree = int(cmd[0]) - 1
+
+                # now we see if a different fundamental frequency has been specified
+                # as well as if an octave offset has been specified
+                if len(cmd) == 3:
+                    octave = float(cmd[1])
+                    freq = float(cmd[2])
+                elif len(cmd) == 2:
+                    octave = float(cmd[1])
+                    freq = self.freq
+                elif len(cmd) == 1:
+                    octave = self.octave
+                    freq = self.freq
+
+                ratio = self.diatonic[degree]
+                
+                freq = (ratio[0] / ratio[1]) * freq * octave
+
+            elif cmd[0][0:1] == 'r':
+                # Set freq to ratio
+                # !TODO implement this...
+                pass
+            else:
+                # Assume anything else is an absolute frequency
+                freq = float(cmd[0])
+
+            operation = 'freq ' + str(freq)
+
+        elif operation == 'v':
+            # Change the volume
+            operation = 'volume ' + cmd[0]
+        elif operation == 'p':
+            # Select partials and their maximum amplitudes
+            pass
+        elif operation == 'n':
+            # Adjust noise mix
+            operation = 'noise ' + cmd[0]
+        elif operation == 'd':
+            # Adjust drift
+            if len(cmd) == 2:
+                drift_width = cmd[0]
+                drift_speed = cmd[1]
+            elif len(cmd) == 1:
+                drift_width = cmd[0]
+                drift_speed = str(self.drift_speed)
+
+            operation = 'drift ' + drift_width + ' ' + drift_speed 
+
+        msg = selection + ' ' + operation
+
+        # Okay, now actually send the message along to pd!
+        self.pd.send([msg])
 
     def do_EOF(self, line):
         return True
