@@ -19,9 +19,11 @@ To open pippi in a split screen, drop this in your .screenrc
     screen -t pippi 1 python2 /path/to/pippi/console.py
 
 To open a connection to pd from the pippi console type
+
     pd c
 
 To turn the overtones up type
+
     o v 9
 
 See console.py for more!
