@@ -44,6 +44,10 @@ class Pippi(cmd.Cmd):
     # Default drift speed for overtones
     drift_speed = 0.3
 
+    # Stores commands for quick callback
+    zbuf = ''
+    xbuf = ''
+
     # Default just diatonic scale
     diatonic = [
         (1.0, 1.0),  # 1:1  P1 C
@@ -174,14 +178,51 @@ class Pippi(cmd.Cmd):
                     octave = self.octave
                     freq = self.freq
 
+                # Pull the ratio from a stored list of just diatonic ratios
                 ratio = self.diatonic[degree]
                 
-                freq = (ratio[0] / ratio[1]) * freq * octave
+                # Calculate the frequency in Hz from the supplied ratio, fundamental frequency
+                # and octave offset. We specify octave as a power of 2. For example: assuming a 
+                # base frequency of 440.0 hz, and an octave offset of 2, we'd expect to get back 
+                # 880.0 hz. Octaves are usually counted with the unison as 1, the first octave above 
+                # the unison as 2, and so on. Since we're multiplying by powers of two, we need to subtract 1 
+                # beforehand, so that an octave offset of 1 (unison) becomes 2 to the power of 0, or 1 - which 
+                # gives us the expected 440.0 hz. ( 440.0 * 2**0 is 440.0 * 1.0 is 440.0 ) 
+                if octave > 0:
+                    freq = (ratio[0] / ratio[1]) * freq * 2**(octave - 1.0)
+                # Pippi uses negative octave offsets as well to indicate moving by octaves downward from 
+                # the unison. So if the supplied offset is less than zero, we take the absolute value and then 
+                # use the reciprocal of the same power of two calculation in order to move downward. 
+                elif octave < 0:
+                    freq = (ratio[0] / ratio[1]) * freq * (1.0 / 2**(math.abs(octave) - 1.0))
+                # Pippi uses a zero octave offset as shorthand for a random positive octave offset between 0 & 100
+                elif octave == 0:
+                    freq = (ratio[0] / ratio[1]) * freq * 2**(random.randint(0, 100))
 
             elif cmd[0][0:1] == 'r':
-                # Set freq to ratio
-                # !TODO implement this...
-                pass
+                # Calculate frequency from an arbitrary ratio
+                ratio = cmd[0][1:] # pull out the ratio
+                ratio = ratio.split(':') # split into a list numerator / denominator
+
+                # We use the same optional octave offset and base frequency override as above
+                if len(cmd) == 3:
+                    octave = float(cmd[1])
+                    freq = float(cmd[2])
+                elif len(cmd) == 2:
+                    octave = float(cmd[1])
+                    freq = self.freq
+                elif len(cmd) == 1:
+                    octave = self.octave
+                    freq = self.freq
+                
+                # Do the same calculation as above, with our custom ratios
+                # This can probably be organized better, to reduce code duplication.
+                if octave > 0:
+                    freq = (float(ratio[0]) / float(ratio[1])) * freq *  2**(octave - 1.0)
+                elif octave < 0:
+                    freq = (float(ratio[0]) / float(ratio[1])) * freq * (1.0 / 2**(math.abs(octave) - 1.0))
+                elif octave == 0:
+                    freq = (float(ratio[0]) / float(ratio[1])) * freq * 2**(random.randint(0, 100))
             else:
                 # Assume anything else is an absolute frequency
                 freq = float(cmd[0])
@@ -193,10 +234,39 @@ class Pippi(cmd.Cmd):
             operation = 'volume ' + cmd[0]
         elif operation == 'p':
             # Select partials and their maximum amplitudes
-            pass
+            partials = []
+            for partial in cmd:
+                partial = partial.split(';')
+                if len(partial) == 2:
+                    amp_scale = float(partial[1])
+                    partial_num = int(partial[0])
+                else:
+                    amp_scale = 1.0
+                    partial_num = int(partial[0])
+                partials.append((partial_num, amp_scale))
+
+            partials.sort() # Default sort will make sure our partials are in order by index not amplitude
+            upper_partial = partials[-1][0] # get the partial index of the last & highest partial
+
+            partial_list = ['0' for i in range(upper_partial)]
+
+            for i in range(upper_partial):
+                for p in partials:
+                    if int(p[0]) == i + 1:
+                        partial_list[i] = str(float(p[1]))
+
+            partial_list = ' '.join(partial_list)
+
+            # sneak in a message with partial count first...
+            self.pd.send([selection + ' partial-amp ' + str(int(100.0 / len(partials)))])
+
+            # construct operation message
+            operation = 'partials ' + partial_list
+
         elif operation == 'n':
             # Adjust noise mix
             operation = 'noise ' + cmd[0]
+
         elif operation == 'd':
             # Adjust drift
             if len(cmd) == 2:
@@ -212,6 +282,20 @@ class Pippi(cmd.Cmd):
 
         # Okay, now actually send the message along to pd!
         self.pd.send([msg])
+
+    def do_z(self, cmd):
+        self.cmd_buffer(cmd, self.zbuf)
+
+    def do_x(self, cmd):
+        self.cmd_buffer(cmd, self.zbuf)
+
+    def cmd_buffer(self, cmd, cbuf):
+        """ command buffer 
+            Stores command prefix or command prefix set and accepts shorthand 
+            param inputs. Type a complex command, buffer it, and run it many times with 
+            granular alterations...
+        """
+        pass
 
     def do_EOF(self, line):
         return True
