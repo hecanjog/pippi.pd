@@ -7,6 +7,7 @@ use of the following software:
 - PureData (vanilla) with the pdlua and zexy libraries
 - Python
 - Jack (optional)
+- [hcj.libpd](http://github.com/hecanjog/hcj.lib)
 
 
 Quick start:
