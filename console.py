@@ -221,7 +221,7 @@ class Pippi(cmd.Cmd):
                 if octave > 0:
                     freq = (float(ratio[0]) / float(ratio[1])) * freq *  2**(octave - 1.0)
                 elif octave < 0:
-                    freq = (float(ratio[0]) / float(ratio[1])) * freq * (1.0 / 2**(math.abs(octave) - 1.0))
+                    freq = (float(ratio[0]) / float(ratio[1])) * freq * (1.0 / 2**(math.fabs(octave) - 1.0))
                 elif octave == 0:
                     freq = (float(ratio[0]) / float(ratio[1])) * freq * 2**(random.randint(0, 100))
             else:
