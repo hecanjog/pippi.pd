@@ -27,6 +27,7 @@ mccormick.cx/projects/PyPd/
 
 import cmd
 import socket
+import math
 
 class Pippi(cmd.Cmd):
     """ Pippi Console """
@@ -175,7 +176,7 @@ class Pippi(cmd.Cmd):
                     octave = float(cmd[1])
                     freq = self.freq
                 elif len(cmd) == 1:
-                    octave = self.octave
+                    octave = float(self.octave)
                     freq = self.freq
 
                 # Pull the ratio from a stored list of just diatonic ratios
@@ -194,7 +195,7 @@ class Pippi(cmd.Cmd):
                 # the unison. So if the supplied offset is less than zero, we take the absolute value and then 
                 # use the reciprocal of the same power of two calculation in order to move downward. 
                 elif octave < 0:
-                    freq = (ratio[0] / ratio[1]) * freq * (1.0 / 2**(math.abs(octave) - 1.0))
+                    freq = (ratio[0] / ratio[1]) * freq * (1.0 / 2**(math.fabs(octave) - 1.0))
                 # Pippi uses a zero octave offset as shorthand for a random positive octave offset between 0 & 100
                 elif octave == 0:
                     freq = (ratio[0] / ratio[1]) * freq * 2**(random.randint(0, 100))
