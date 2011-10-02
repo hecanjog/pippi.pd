@@ -3,12 +3,10 @@ Pippi is some shit I use when I perform.
 It's intended to be used from the linux console and makes
 use of the following software:
 
-- GNU Screen (optional, but nice!)
-- PureData (vanilla) with the pdlua and zexy libraries
+- GNU screen or tmux (optional, but nice!)
+- PureData (vanilla) with the pdlua (mostly optional) and zexy libraries
 - Python
 - Jack (optional)
-- [hcj.libpd](http://github.com/hecanjog/hcj.lib)
-
 
 Quick start:
 
