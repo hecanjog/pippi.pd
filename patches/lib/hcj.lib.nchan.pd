@@ -1,0 +1,18 @@
+#N canvas 1386 73 370 139 10;
+#X obj 24 70 s nk\$1;
+#X obj 24 48 ctlin \$2;
+#X obj 93 48 ctlin \$3;
+#X obj 93 70 s nf\$1;
+#X obj 176 44 ctlin \$4;
+#X obj 176 88 s nb\$1-1;
+#X obj 176 66 / 127;
+#X obj 263 46 ctlin \$5;
+#X obj 263 90 s nb\$1-2;
+#X text 28 20 knob fader top button bottom button;
+#X obj 263 68 select 127;
+#X connect 1 0 0 0;
+#X connect 2 0 3 0;
+#X connect 4 0 6 0;
+#X connect 6 0 5 0;
+#X connect 7 0 10 0;
+#X connect 10 0 8 0;

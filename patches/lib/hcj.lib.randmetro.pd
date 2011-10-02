@@ -1,0 +1,24 @@
+#N canvas 0 0 450 300 10;
+#X obj 76 108 inlet;
+#X obj 143 95 loadbang;
+#X obj 143 184 outlet;
+#X obj 226 116 random \$1;
+#X obj 226 138 + \$2;
+#X obj 143 138 metro \$2;
+#X msg 143 116 1;
+#X text 33 15 args: max delay (ms) \, min delay (ms);
+#X text 32 30 inlets: metro on/off \, max delay (ms) \, min delay (ms)
+;
+#X obj 277 95 inlet;
+#X obj 333 114 inlet;
+#X obj 241 173 outlet;
+#X connect 0 0 5 0;
+#X connect 1 0 6 0;
+#X connect 3 0 4 0;
+#X connect 4 0 5 1;
+#X connect 4 0 11 0;
+#X connect 5 0 2 0;
+#X connect 5 0 3 0;
+#X connect 6 0 5 0;
+#X connect 9 0 3 1;
+#X connect 10 0 4 1;

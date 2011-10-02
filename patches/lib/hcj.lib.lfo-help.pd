@@ -1,0 +1,44 @@
+#N canvas 200 189 477 287 10;
+#X declare -path .;
+#X msg 263 72 rand.txt;
+#X msg 117 43 500;
+#X text 115 25 speed in ms;
+#X obj 58 67 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0 1
+;
+#X text 46 47 toggle;
+#X obj 143 143 * 127;
+#X obj 146 165 hsl 128 15 0 127 0 0 empty empty empty -2 -8 0 10 -262144
+-1 -1 12700 1;
+#X floatatom 86 124 5 0 0 0 - - -;
+#X obj 206 71 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
+-1;
+#X obj 262 117 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
+-1 -1;
+#X floatatom 185 144 5 0 0 0 - - -;
+#X obj 37 162 osc~;
+#X obj 33 219 dac~ 1 2;
+#X obj 37 122 *~ 100;
+#X obj 37 142 +~ 300;
+#X obj 37 182 *~ 0.05;
+#X msg 151 43 10000;
+#X text 246 17 args: datafile \, steps \, length;
+#X text 275 96 (not *really* a sinewave...);
+#X text 148 214 cheap-ass lfo;
+#X obj 92 96 hcj.lib.lfo line.txt 127 10000;
+#X obj 329 180 declare -path .;
+#X connect 0 0 20 3;
+#X connect 1 0 20 1;
+#X connect 3 0 20 0;
+#X connect 5 0 6 0;
+#X connect 8 0 20 2;
+#X connect 11 0 15 0;
+#X connect 13 0 14 0;
+#X connect 14 0 11 0;
+#X connect 15 0 12 0;
+#X connect 15 0 12 1;
+#X connect 16 0 20 1;
+#X connect 20 0 7 0;
+#X connect 20 0 13 0;
+#X connect 20 1 5 0;
+#X connect 20 1 10 0;
+#X connect 20 2 9 0;

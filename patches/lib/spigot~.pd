@@ -1,0 +1,18 @@
+#N canvas 89 163 450 300 10;
+#X obj 94 52 inlet~;
+#X obj 156 42 inlet;
+#X obj 94 174 outlet~;
+#X obj 210 176 outlet~;
+#X obj 231 100 == 0;
+#X obj 210 129 *~ 0;
+#X obj 93 133 *~ 1;
+#X obj 156 60 t f f;
+#X text 156 224 replacement for the pd-extended extern;
+#X connect 0 0 6 0;
+#X connect 0 0 5 0;
+#X connect 1 0 7 0;
+#X connect 4 0 5 1;
+#X connect 5 0 3 0;
+#X connect 6 0 2 0;
+#X connect 7 0 6 1;
+#X connect 7 1 4 0;

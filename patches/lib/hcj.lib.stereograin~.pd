@@ -1,0 +1,16 @@
+#N canvas 0 67 879 493 10;
+#X obj 261 186 inlet~;
+#X obj 212 314 outlet~;
+#X obj 291 314 outlet~;
+#X obj 546 246 hcj.lib.grain2~ \$1 0.75;
+#X obj 397 246 hcj.lib.grain2~ \$1 0.25;
+#X obj 253 248 hcj.lib.grain2~ \$1 0.5;
+#X obj 120 248 hcj.lib.grain2~ \$1 0;
+#X connect 0 0 3 0;
+#X connect 0 0 4 0;
+#X connect 0 0 5 0;
+#X connect 0 0 6 0;
+#X connect 3 0 2 0;
+#X connect 4 0 2 0;
+#X connect 5 0 1 0;
+#X connect 6 0 1 0;
