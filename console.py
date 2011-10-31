@@ -74,10 +74,71 @@ class Pippi(cmd.Cmd):
             self.pd = PdSend()
         elif cmd[0] == 'd':
             self.pd.close()
+            exit()
+
+    def do_s(self, cmd):
+        cmds = cmd.split(',')
+        for cmd in cmds:
+            self.sparklesynth(cmd)
+
+    def sparklesynth(self, cmd):
+        """
+        interact with sparklesynth
+
+        the sparklesynth in pippi is just a 
+        stupidly named combination sampler and synth broken into 
+        three parts: a polyphonic (four voices) sampler, 
+        a polyphonic (also four voices) synth whose voices are 
+        just sinewave oscilators, and a monophonic sinewave oscilator.
+
+        the output is a mixture of the sampler and the sinewaves, and the 
+        sine voices toggle between polyphonic or monophonic behavior.
+
+        all voices are tuned to an arbitrary set of frequency ratios 
+        specified in the piphz.pd_lua script and their fundamental can be 
+        arbitrarily set via the pippi console.
+
+        attack, decay, and mixture can also be specified via the console.
+
+        other things too, but more on that later! peek at the pd patch to 
+        see it all in the meantime...
+
+        note onsets are triggered via midi [notein] right now. I'd like to 
+        do it via the computer keyboard in the future, but I'm not sure how to 
+        do that without forcing an alternation between 'play' mode and command mode
+        for the interactive console. how would you play a figure and input a command 
+        at the same time? maybe it's not as important to do that as I think.
+        """
+
+        # Only one target, so we can prefix every message like this
+        msg = 'sparklesynth '
+
+        # Split the input command into a list of command segments
+        cmd = cmd.split()
+
+        operation = cmd[0]
+        cmd.pop(0)
+
+        if operation == 'v':
+            msg += 'volume ' + cmd[0]
+        elif operation == 'a':
+            msg += 'attack ' + cmd[0]
+        elif operation == 'd':
+            msg += 'decay ' + cmd[0]
+        elif operation == 'c':
+            msg += 'crossfade ' + cmd[0]
+        elif operation == 'm':
+            msg += 'monophonic 1'
+        elif operation == 'p':
+            msg += 'polyphonic 0'
+        elif operation == 'r':
+            msg += 'resampler ' + cmd[0]
+
+        # Send command to PD
+        self.pd.send([msg])
 
     def do_o(self, cmd):
         cmds = cmd.split(',')
-
         for cmd in cmds:
             self.overtones(cmd)
 
