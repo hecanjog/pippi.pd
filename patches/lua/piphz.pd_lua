@@ -1,10 +1,10 @@
 local PipHz = pd.Class:new():register("piphz")
 
 function PipHz:initialize(sel, atoms)
-    self.inlets = 1 
+    self.inlets = 2 
     self.outlets = 4 
     self.voices = {} 
-    self.base_hz = 261.63 
+    self.base_hz = 240.0
     self.samp_hz = 110
 
     self.ratios = {
@@ -33,6 +33,12 @@ function PipHz:initialize(sel, atoms)
     pd.post("Tuning to: " .. tostring(self.base_hz))
 
     return true
+end
+
+function PipHz:in_2_float(hz)
+    if type(hz) == "number" then
+            self.base_hz = hz 
+    end
 end
 
 function PipHz:in_1(sel, atoms)

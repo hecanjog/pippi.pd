@@ -133,6 +133,14 @@ class Pippi(cmd.Cmd):
             msg += 'polyphonic 0'
         elif operation == 'r':
             msg += 'resampler ' + cmd[0]
+        elif operation == 't':
+            msg += 'tempo ' + cmd[0]
+        elif operation == 'tl':
+            msg += 'tempolow ' + cmd[0]
+        elif operation == 'f':
+            msg += 'freq ' + cmd[0]
+        elif operation == 'i':
+            msg += 'input ' + cmd[0]
 
         # Send command to PD
         self.pd.send([msg])
