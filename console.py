@@ -86,13 +86,7 @@ class Pippi(cmd.Cmd):
         interact with sparklesynth
 
         the sparklesynth in pippi is just a 
-        stupidly named combination sampler and synth broken into 
-        three parts: a polyphonic (four voices) sampler, 
-        a polyphonic (also four voices) synth whose voices are 
-        just sinewave oscilators, and a monophonic sinewave oscilator.
-
-        the output is a mixture of the sampler and the sinewaves, and the 
-        sine voices toggle between polyphonic or monophonic behavior.
+        stupidly named polyphonic sampler 
 
         all voices are tuned to an arbitrary set of frequency ratios 
         specified in the piphz.pd_lua script and their fundamental can be 
@@ -125,15 +119,12 @@ class Pippi(cmd.Cmd):
             msg += 'attack ' + cmd[0]
         elif operation == 'd':
             msg += 'decay ' + cmd[0]
-        elif operation == 'c':
-            msg += 'crossfade ' + cmd[0]
-        elif operation == 'm':
-            msg += 'monophonic 1'
-        elif operation == 'p':
-            msg += 'polyphonic 0'
         elif operation == 'r':
             msg += 'resampler ' + cmd[0]
         elif operation == 't':
+            self.pd.send([msg + 'tempolow ' + cmd[0]])
+            msg += 'tempo ' + cmd[0]
+        elif operation == 'th':
             msg += 'tempo ' + cmd[0]
         elif operation == 'tl':
             msg += 'tempolow ' + cmd[0]
@@ -302,6 +293,7 @@ class Pippi(cmd.Cmd):
         elif operation == 'v':
             # Change the volume
             operation = 'volume ' + cmd[0]
+
         elif operation == 'p':
             # Select partials and their maximum amplitudes
             partials = []
