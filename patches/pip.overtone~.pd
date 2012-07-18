@@ -1,4 +1,4 @@
-#N canvas 0 47 958 1031 10;
+#N canvas 0 44 718 854 10;
 #X declare -path lib;
 #X obj 35 350 tabosc4~ \$0-overtone;
 #X obj 591 120 table \$0-overtone;
@@ -55,15 +55,15 @@
 #X msg 1000 312 0 \, 512 \$1;
 #X obj 36 488 *~;
 #X obj 13 194 float 220;
-#X obj 851 22 r overtones;
+#X obj 823 21 r overtones;
 #X obj 869 71 s \$0-hz;
 #X obj 840 93 s \$0-volume;
 #X obj 840 71 / 9;
 #X obj 114 515 line~;
 #X obj 35 540 *~;
 #X obj 114 470 r \$0-volume;
-#X obj 925 22 r o\$1;
-#X obj 963 22 r o\$1\$2;
+#X obj 909 21 r o\$1;
+#X obj 962 19 r o\$1\$2;
 #X obj 927 71 s \$0-noise;
 #X obj 1038 67 s \$0-partials;
 #X obj 758 363 list prepend 512;
@@ -92,7 +92,7 @@
 #X msg 1002 119 \$1 1500;
 #X obj 1107 141 line;
 #X msg 1107 120 \$1 1500;
-#X msg 759 205 1 1 1 1 1 1;
+#X msg 759 205 1 0 1 0 1 0 1;
 #X obj 759 227 hcj.iterate;
 #X obj 759 306 *;
 #X obj 759 247 t f b;
