@@ -11,6 +11,7 @@ def play(args):
     glitch = False
     superglitch = False
     pulse = False
+    ratios = tune.terry
 
     rhodes = dsp.read('sounds/220rhodes.wav').data
 
@@ -53,12 +54,18 @@ def play(args):
             glitch = True
             superglitch = True
 
+        if a[0] == 'tr':
+            if a[1] == 'young':
+                ratios = tune.young
+            elif a[1] == 'terry':
+                ratios = tune.terry
+
         if a[0] == 's':
             scale = [int(s) for s in a[1].split('.')]
 
     out = ''
     for i in range(reps):
-        freq = tune.step(i, note, octave, scale, quality)
+        freq = tune.step(i, note, octave, scale, quality, ratios)
         diff = freq / 440.0
 
         n = dsp.transpose(rhodes, diff)
