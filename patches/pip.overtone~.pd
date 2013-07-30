@@ -1,4 +1,4 @@
-#N canvas 0 47 958 1031 10;
+#N canvas 0 769 478 309 10;
 #X declare -path lib;
 #X obj 35 350 tabosc4~ \$0-overtone;
 #X obj 591 120 table \$0-overtone;

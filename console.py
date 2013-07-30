@@ -76,6 +76,25 @@ class Pippi(cmd.Cmd):
             self.pd.close()
             exit()
 
+    def do_m(self, cmd):
+        cmds = cmd.split(',')
+        for cmd in cmds:
+            self.mesh(cmd)
+
+    def mesh(self, cmd):
+        msg = 'mesh '
+
+        cmd = cmd.split()
+        operation = cmd[0]
+        cmd.pop(0)
+
+        if operation == 'v':
+            msg += 'volume ' + cmd[0]
+
+        # Send command to PD
+        self.pd.send([msg])
+
+
     def do_s(self, cmd):
         cmds = cmd.split(',')
         for cmd in cmds:
@@ -119,6 +138,10 @@ class Pippi(cmd.Cmd):
             msg += 'attack ' + cmd[0]
         elif operation == 'd':
             msg += 'decay ' + cmd[0]
+        elif operation == 'c':
+            msg += 'capture ' + cmd[0]
+        elif operation == 'k':
+            msg += 'clear 1'
         elif operation == 'r':
             msg += 'resampler ' + cmd[0]
         elif operation == 't':
